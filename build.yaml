@@ -1,6 +1,6 @@
 ---
 include:
   - board: nice_nano_v2
-    shield: lily58_left dongle_display
+    shield: lily58_left lily58_portrait
   - board: nice_nano_v2
     shield: lily58_right
