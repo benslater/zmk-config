@@ -67,4 +67,15 @@
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
         };
     };
+
+    combos {
+    compatible = "zmk,combos";
+
+    combo_power_off {
+        timeout-ms = <100>;
+        key-positions = <0 1 2>; /* Esc + 1 + 2 */
+        bindings = <&soft_off>;
+        layers = <0>;
+    };
+    };
 };

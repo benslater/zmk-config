@@ -1,1 +1,6 @@
 /* Display hardware is supplied by the lily58_left shield. */
+
+/* Disable the Lily58's default OLED colour inversion. */
+&oled {
+    /delete-property/ inversion-on;
+};
