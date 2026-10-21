@@ -10,72 +10,93 @@
 #include <dt-bindings/zmk/ext_power.h>
 
 / {
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        window_controls {
+            if-layers = <1 2>;
+            then-layer = <3>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
         default_layer {
-// ------------------------------------------------------------------------------------------------------------
-// |  ESC  |  1  |  2  |  3   |  4   |  5   |                   |  6   |  7    |  8    |  9   |   0   |   `   |
-// |  TAB  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   |   -   |
-// |  CTRL |  A  |  S  |  D   |  F   |  G   |                   |  H   |  J    |  K    |  L   |   ;   |   '   |
-// | SHIFT |  Z  |  X  |  C   |  V   |  B   |   "["  |  |  "]"  |  N   |  M    |  ,    |  .   |   /   | SHIFT |
-//                     | ALT  | GUI  | LOWER|  SPACE |  | ENTER | RAISE| BSPC  | GUI   |
+                        // Blank = transparent (inherits); --- = no action.
+            // |   ESC    |    1     |    2     |    3     |    4     |    5     |          |  |          |    6     |    7     |    8     |    9     |    0     |    `     |
+            // |   TAB    |    Q     |    W     |    E     |    R     |    T     |          |  |          |    Y     |    U     |    I     |    O     |    P     |    -     |
+            // |   CTRL   |    A     |    S     |    D     |    F     |    G     |          |  |          |    H     |    J     |    K     |    L     |    ;     |    '     |
+            // |  SHIFT   |    Z     |    X     |    C     |    V     |    B     |    [     |  |    ]     |    N     |    M     |    ,     |    .     |    /     |  SHIFT   |
+            // |          |          |   OPT    |   CMD    |  LOWER   |  SPACE   |          |  |          |  ENTER   |  RAISE   |   BSPC   |   CMD    |          |          |
             bindings = <
-&kp ESC   &kp N1 &kp N2 &kp N3   &kp N4   &kp N5                     &kp N6 &kp N7   &kp N8    &kp N9  &kp N0   &kp GRAVE
-&kp TAB   &kp Q  &kp W  &kp E    &kp R    &kp T                      &kp Y  &kp U    &kp I     &kp O   &kp P    &kp MINUS
-&kp LCTRL &kp A  &kp S  &kp D    &kp F    &kp G                      &kp H  &kp J    &kp K     &kp L   &kp SEMI &kp SQT
-&kp LSHFT &kp Z  &kp X  &kp C    &kp V    &kp B  &kp LBKT   &kp RBKT &kp N  &kp M    &kp COMMA &kp DOT &kp FSLH &kp RSHFT
-                        &kp LALT &kp LGUI &mo 1  &kp SPACE  &kp RET  &mo 2  &kp BSPC &kp RGUI
+                &kp ESC    &kp N1  &kp N2    &kp N3    &kp N4  &kp N5                         &kp N6   &kp N7  &kp N8     &kp N9    &kp N0    &kp GRAVE
+                &kp TAB    &kp Q   &kp W     &kp E     &kp R   &kp T                          &kp Y    &kp U   &kp I      &kp O     &kp P     &kp MINUS
+                &kp LCTRL  &kp A   &kp S     &kp D     &kp F   &kp G                          &kp H    &kp J   &kp K      &kp L     &kp SEMI  &kp SQT
+                &kp LSHFT  &kp Z   &kp X     &kp C     &kp V   &kp B      &kp LBKT  &kp RBKT  &kp N    &kp M   &kp COMMA  &kp DOT   &kp FSLH  &kp RSHFT
+                                   &kp LALT  &kp LGUI  &mo 1   &kp SPACE                      &kp RET  &mo 2   &kp BSPC   &kp RGUI
             >;
-
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
         };
 
         lower_layer {
-// ------------------------------------------------------------------------------------------------------------
-// | BTCLR | BT1 | BT2 |  BT3 |  BT4 |  BT5 |                   |      |       |       |      |       |       |
-// |  F1   |  F2 |  F3 |  F4  |  F5  |  F6  |                   |  F7  |  F8   |  F9   |  F10 |  F11  |  F12  |
-// |   `   |  !  |  @  |  #   |  $   |  %   |                   |  ^   |  &    |  *    |  (   |   )   |   ~   |
-// |       |     |     |      |      |      |        |  |       |      |  _    |  +    |  {   |   }   |  "|"  |
-//                     |      |      |      |        |  |       |      |       |       |
+            // LOWER + Z: external power on; Grave: Bluetooth clear; Backspace: Delete.
+            // LOWER + either inner bracket: reset that half.
+                        // Blank = transparent (inherits); --- = no action.
+            // |          |   BT 1   |   BT 2   |   BT 3   |   BT 4   |   BT 5   |          |  |          |          |          |          |          |          | BT CLEAR |
+            // |    F1    |    F2    |    F3    |    F4    |    F5    |    F6    |          |  |          |    F7    |    F8    |    F9    |   F10    |   F11    |   F12    |
+            // |    `     |    !     |    @     |    #     |    $     |    %     |          |  |          |    ^     |    &     |    *     |    (     |    )     |    ~     |
+            // |          |  PWR ON  |          |          |          |          |  RESET   |  |  RESET   |          |    -     |    +     |    {     |    }     |   PIPE   |
+            // |          |          |          |          |          |          |          |  |          |          |          |  DELETE  |          |          |          |
             bindings = <
-&bt BT_CLR &bt BT_SEL 0     &bt BT_SEL 1      &bt BT_SEL 2      &bt BT_SEL 3 &bt BT_SEL 4                 &trans    &trans    &trans    &trans    &trans    &trans
-&kp F1     &kp F2           &kp F3            &kp F4            &kp F5       &kp F6                       &kp F7    &kp F8    &kp F9    &kp F10   &kp F11   &kp F12
-&kp GRAVE  &kp EXCL         &kp AT            &kp HASH          &kp DOLLAR   &kp PRCNT                    &kp CARET &kp AMPS  &kp ASTRK &kp LPAR  &kp RPAR  &kp TILDE
-&trans     &ext_power EP_ON &ext_power EP_OFF &ext_power EP_TOG &trans       &trans    &trans   &trans    &trans    &kp MINUS &kp PLUS  &kp LBRC  &kp RBRC  &kp PIPE
-                                              &trans            &trans       &trans    &trans   &trans    &trans    &trans    &trans
+                &trans     &bt BT_SEL 0      &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                          &trans     &trans     &trans     &trans    &trans    &bt BT_CLR
+                &kp F1     &kp F2            &kp F3        &kp F4        &kp F5        &kp F6                                &kp F7     &kp F8     &kp F9     &kp F10   &kp F11   &kp F12
+                &kp GRAVE  &kp EXCL          &kp AT        &kp HASH      &kp DOLLAR    &kp PRCNT                             &kp CARET  &kp AMPS   &kp ASTRK  &kp LPAR  &kp RPAR  &kp TILDE
+                &trans     &ext_power EP_ON  &trans        &trans        &trans        &trans        &sys_reset  &sys_reset  &trans     &kp MINUS  &kp PLUS   &kp LBRC  &kp RBRC  &kp PIPE
+                                             &trans        &trans        &trans        &trans                                &trans     &trans     &kp DEL    &trans
             >;
-
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
         };
 
         raise_layer {
-// ------------------------------------------------------------------------------------------------------------
-// |       |     |     |      |      |      |                   |      |       |       |      |       |       |
-// |   `   |  1  |  2  |  3   |  4   |  5   |                   |  6   |   7   |   8   |  9   |   0   |       |
-// |   F1  |  F2 |  F3 |  F4  |  F5  |  F6  |                   |      |   <-  |   v   |  ^   |  ->   |       |
-// |   F7  |  F8 |  F9 |  F10 |  F11 |  F12 |        |  |       |  +   |   -   |   =   |  [   |   ]   |   \   |
-//                     |      |      |      |        |  |       |      |       |       |
+            // Top-right row (6, 7, 8, 9, 0, Grave):
+            // Previous, Play/Pause, Next, Volume Up, Volume Down, Mute.
+            // Arrows: I = Up; J = Left; K = Down; L = Right.
+            // RAISE + either inner bracket: bootloader for that half.
+            // Former second-row number bindings now fall through to base letters.
+                        // Blank = transparent (inherits); --- = no action.
+            // |          |          |          |          |          |          |          |  |          |   PREV   |PLAY/PAUSE|   NEXT   |   VOL+   |   VOL-   |   MUTE   |
+            // |    `     |          |          |          |          |          |          |  |          |          |          |    UP    |          |          |          |
+            // |    F1    |    F2    |    F3    |    F4    |    F5    |    F6    |          |  |          |          |   LEFT   |   DOWN   |  RIGHT   |          |          |
+            // |    F7    |    F8    |    F9    |   F10    |   F11    |   F12    |   BOOT   |  |   BOOT   |   KP+    |    -     |    =     |    [     |    ]     |    \     |
+            // |          |          |          |          |          |          |          |  |          |          |          |          |          |          |          |
             bindings = <
-&trans    &trans &trans &trans  &trans  &trans                       &trans      &trans    &trans    &trans   &trans    &trans
-&kp GRAVE &kp N1 &kp N2 &kp N3  &kp N4  &kp N5                       &kp N6      &kp N7    &kp N8    &kp N9   &kp N0    &trans
-&kp F1    &kp F2 &kp F3 &kp F4  &kp F5  &kp F6                       &trans      &kp LEFT  &kp DOWN  &kp UP   &kp RIGHT &trans
-&kp F7    &kp F8 &kp F9 &kp F10 &kp F11 &kp F12   &trans   &trans    &kp KP_PLUS &kp MINUS &kp EQUAL &kp LBKT &kp RBKT  &kp BSLH
-                        &trans  &trans  &trans    &trans   &trans    &trans      &trans    &trans
+                &trans     &trans  &trans  &trans   &trans   &trans                             &kp C_PREV   &kp C_PP   &kp C_NEXT  &kp C_VOL_UP  &kp C_VOL_DN  &kp C_MUTE
+                &kp GRAVE  &trans  &trans  &trans   &trans   &trans                             &trans       &trans     &kp UP      &trans        &trans        &trans
+                &kp F1     &kp F2  &kp F3  &kp F4   &kp F5   &kp F6                             &trans       &kp LEFT   &kp DOWN    &kp RIGHT     &trans        &trans
+                &kp F7     &kp F8  &kp F9  &kp F10  &kp F11  &kp F12  &bootloader  &bootloader  &kp KP_PLUS  &kp MINUS  &kp EQUAL   &kp LBKT      &kp RBKT      &kp BSLH
+                                   &trans  &trans   &trans   &trans                             &trans       &trans     &trans      &trans
             >;
-
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
         };
-    };
 
-    combos {
-    compatible = "zmk,combos";
-
-    combo_power_off {
-        timeout-ms = <100>;
-        key-positions = <0 1 2>; /* Esc + 1 + 2 */
-        bindings = <&soft_off>;
-        layers = <0>;
-    };
+        window_layer {
+            // Hold LOWER + RAISE, in either order; release either to leave.
+            // Rectangle: I/J/K/L = halves; T/E = right/left two-thirds.
+            // Unassigned finger keys do nothing on this layer.
+                        // Blank = transparent (inherits); --- = no action.
+            // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // |   ---    |   ---    |   ---    | LEFT 2/3 |   ---    |RIGHT 2/3 |          |  |          |   ---    |   ---    | TOP 1/2  |   ---    |   ---    |   ---    |
+            // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    | LEFT 1/2 |BOTTOM 1/2|RIGHT 1/2 |   ---    |   ---    |
+            // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |  |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // |          |          |          |          |          |          |          |  |          |          |          |          |          |          |          |
+            bindings = <
+                &none  &none  &none   &none          &none   &none                        &none   &none             &none             &none              &none  &none
+                &none  &none  &none   &kp LC(LA(E))  &none   &kp LC(LA(T))                &none   &none             &kp LC(LA(UP))    &none              &none  &none
+                &none  &none  &none   &none          &none   &none                        &none   &kp LC(LA(LEFT))  &kp LC(LA(DOWN))  &kp LC(LA(RIGHT))  &none  &none
+                &none  &none  &none   &none          &none   &none          &none  &none  &none   &none             &none             &none              &none  &none
+                              &trans  &trans         &trans  &trans                       &trans  &trans            &trans            &trans
+            >;
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+        };
     };
 };
