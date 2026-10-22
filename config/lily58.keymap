@@ -16,13 +16,17 @@
             if-layers = <1 2>;
             then-layer = <3>;
         };
+        maintenance_controls {
+            if-layers = <1 2 4>;
+            then-layer = <5>;
+        };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
         default_layer {
-                        // Blank = transparent (inherits); --- = no action.
+            // Blank = transparent (inherits); --- = no action.
             // |   ESC    |    1     |    2     |    3     |    4     |    5     |          |  |          |    6     |    7     |    8     |    9     |    0     |    `     |
             // |   TAB    |    Q     |    W     |    E     |    R     |    T     |          |  |          |    Y     |    U     |    I     |    O     |    P     |    -     |
             // |   CTRL   |    A     |    S     |    D     |    F     |    G     |          |  |          |    H     |    J     |    K     |    L     |    ;     |    '     |
@@ -41,7 +45,7 @@
         lower_layer {
             // LOWER + Z: external power on; Grave: Bluetooth clear; Backspace: Delete.
             // LOWER + either inner bracket: reset that half.
-                        // Blank = transparent (inherits); --- = no action.
+            // Blank = transparent (inherits); --- = no action.
             // |          |   BT 1   |   BT 2   |   BT 3   |   BT 4   |   BT 5   |          |  |          |          |          |          |          |          | BT CLEAR |
             // |    F1    |    F2    |    F3    |    F4    |    F5    |    F6    |          |  |          |    F7    |    F8    |    F9    |   F10    |   F11    |   F12    |
             // |    `     |    !     |    @     |    #     |    $     |    %     |          |  |          |    ^     |    &     |    *     |    (     |    )     |    ~     |
@@ -61,20 +65,20 @@
             // Top-right row (6, 7, 8, 9, 0, Grave):
             // Previous, Play/Pause, Next, Volume Up, Volume Down, Mute.
             // Arrows: I = Up; J = Left; K = Down; L = Right.
-            // RAISE + either inner bracket: bootloader for that half.
+            // Inner bracket keys inherit their base-layer bracket characters.
             // Former second-row number bindings now fall through to base letters.
-                        // Blank = transparent (inherits); --- = no action.
+            // Blank = transparent (inherits); --- = no action.
             // |          |          |          |          |          |          |          |  |          |   PREV   |PLAY/PAUSE|   NEXT   |   VOL+   |   VOL-   |   MUTE   |
             // |    `     |          |          |          |          |          |          |  |          |          |          |    UP    |          |          |          |
             // |    F1    |    F2    |    F3    |    F4    |    F5    |    F6    |          |  |          |          |   LEFT   |   DOWN   |  RIGHT   |          |          |
-            // |    F7    |    F8    |    F9    |   F10    |   F11    |   F12    |   BOOT   |  |   BOOT   |   KP+    |    -     |    =     |    [     |    ]     |    \     |
+            // |    F7    |    F8    |    F9    |   F10    |   F11    |   F12    |          |  |          |   KP+    |    -     |    =     |    [     |    ]     |    \     |
             // |          |          |          |          |          |          |          |  |          |          |          |          |          |          |          |
             bindings = <
-                &trans     &trans  &trans  &trans   &trans   &trans                             &kp C_PREV   &kp C_PP   &kp C_NEXT  &kp C_VOL_UP  &kp C_VOL_DN  &kp C_MUTE
-                &kp GRAVE  &trans  &trans  &trans   &trans   &trans                             &trans       &trans     &kp UP      &trans        &trans        &trans
-                &kp F1     &kp F2  &kp F3  &kp F4   &kp F5   &kp F6                             &trans       &kp LEFT   &kp DOWN    &kp RIGHT     &trans        &trans
-                &kp F7     &kp F8  &kp F9  &kp F10  &kp F11  &kp F12  &bootloader  &bootloader  &kp KP_PLUS  &kp MINUS  &kp EQUAL   &kp LBKT      &kp RBKT      &kp BSLH
-                                   &trans  &trans   &trans   &trans                             &trans       &trans     &trans      &trans
+                &trans     &trans  &trans  &trans   &trans   &trans                   &kp C_PREV   &kp C_PP   &kp C_NEXT  &kp C_VOL_UP  &kp C_VOL_DN  &kp C_MUTE
+                &kp GRAVE  &trans  &trans  &trans   &trans   &trans                   &trans       &trans     &kp UP      &trans        &trans        &trans
+                &kp F1     &kp F2  &kp F3  &kp F4   &kp F5   &kp F6                   &trans       &kp LEFT   &kp DOWN    &kp RIGHT     &trans        &trans
+                &kp F7     &kp F8  &kp F9  &kp F10  &kp F11  &kp F12  &trans  &trans  &kp KP_PLUS  &kp MINUS  &kp EQUAL   &kp LBKT      &kp RBKT      &kp BSLH
+                                   &trans  &trans   &trans   &trans                   &trans       &trans     &trans      &trans
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
         };
@@ -82,19 +86,55 @@
         window_layer {
             // Hold LOWER + RAISE, in either order; release either to leave.
             // Rectangle: I/J/K/L = halves; T/E = right/left two-thirds.
-            // Unassigned finger keys do nothing on this layer.
-                        // Blank = transparent (inherits); --- = no action.
-            // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // Hold Esc to arm maintenance; unassigned finger keys do nothing.
+            // Blank = transparent (inherits); --- = no action.
+            // |MAINT HOLD|   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
             // |   ---    |   ---    |   ---    | LEFT 2/3 |   ---    |RIGHT 2/3 |          |  |          |   ---    |   ---    | TOP 1/2  |   ---    |   ---    |   ---    |
             // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    | LEFT 1/2 |BOTTOM 1/2|RIGHT 1/2 |   ---    |   ---    |
             // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |  |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
             // |          |          |          |          |          |          |          |  |          |          |          |          |          |          |          |
             bindings = <
-                &none  &none  &none   &none          &none   &none                        &none   &none             &none             &none              &none  &none
+                &mo 4  &none  &none   &none          &none   &none                        &none   &none             &none             &none              &none  &none
                 &none  &none  &none   &kp LC(LA(E))  &none   &kp LC(LA(T))                &none   &none             &kp LC(LA(UP))    &none              &none  &none
                 &none  &none  &none   &none          &none   &none                        &none   &kp LC(LA(LEFT))  &kp LC(LA(DOWN))  &kp LC(LA(RIGHT))  &none  &none
                 &none  &none  &none   &none          &none   &none          &none  &none  &none   &none             &none             &none              &none  &none
                               &trans  &trans         &trans  &trans                       &trans  &trans            &trans            &trans
+            >;
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+        };
+
+        maintenance_arm_layer {
+            // Internal arming layer. Bootloader remains blocked unless LOWER and RAISE are both held.
+            // Blank = transparent (inherits); --- = no action.
+            // |          |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |  |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // |          |          |   ---    |   ---    |          |   ---    |          |  |          |   ---    |          |   ---    |   ---    |          |          |
+            bindings = <
+                &trans  &none  &none  &none  &none   &none                &none  &none   &none  &none  &none  &none
+                &none   &none  &none  &none  &none   &none                &none  &none   &none  &none  &none  &none
+                &none   &none  &none  &none  &none   &none                &none  &none   &none  &none  &none  &none
+                &none   &none  &none  &none  &none   &none  &none  &none  &none  &none   &none  &none  &none  &none
+                               &none  &none  &trans  &none                &none  &trans  &none  &none
+            >;
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+        };
+
+        maintenance_layer {
+            // Hold LOWER + RAISE, then hold Esc, then tap the target half's inner bracket. Release any hold to disarm.
+            // Blank = transparent (inherits); --- = no action.
+            // |          |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |   BOOT   |  |   BOOT   |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
+            // |          |          |   ---    |   ---    |          |   ---    |          |  |          |   ---    |          |   ---    |   ---    |          |          |
+            bindings = <
+                &trans  &none  &none  &none  &none   &none                            &none  &none   &none  &none  &none  &none
+                &none   &none  &none  &none  &none   &none                            &none  &none   &none  &none  &none  &none
+                &none   &none  &none  &none  &none   &none                            &none  &none   &none  &none  &none  &none
+                &none   &none  &none  &none  &none   &none  &bootloader  &bootloader  &none  &none   &none  &none  &none  &none
+                               &none  &none  &trans  &none                            &none  &trans  &none  &none
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
         };
