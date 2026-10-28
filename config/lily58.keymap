@@ -63,18 +63,18 @@
 
         raise_layer {
             // Top-right row (6, 7, 8, 9, 0, Grave):
-            // Previous, Play/Pause, Next, Volume Up, Volume Down, Mute.
+            // Previous, Play/Pause, Next, Volume Down, Volume Up, Mute.
             // Arrows: I = Up; J = Left; K = Down; L = Right.
             // Inner bracket keys inherit their base-layer bracket characters.
             // Former second-row number bindings now fall through to base letters.
             // Blank = transparent (inherits); --- = no action.
-            // |          |          |          |          |          |          |          |  |          |   PREV   |PLAY/PAUSE|   NEXT   |   VOL+   |   VOL-   |   MUTE   |
+            // |          |          |          |          |          |          |          |  |          |   PREV   |PLAY/PAUSE|   NEXT   |   VOL-   |   VOL+   |   MUTE   |
             // |    `     |          |          |          |          |          |          |  |          |          |          |    UP    |          |          |          |
             // |          |          |          |          |          |          |          |  |          |          |   LEFT   |   DOWN   |  RIGHT   |          |          |
             // |          |          |          |          |          |          |          |  |          |   KP+    |    -     |    =     |    [     |    ]     |    \     |
             // |          |          |          |          |          |          |          |  |          |          |          |          |          |          |          |
             bindings = <
-                &trans     &trans  &trans  &trans   &trans   &trans                   &kp C_PREV   &kp C_PP   &kp C_NEXT  &kp C_VOL_UP  &kp C_VOL_DN  &kp C_MUTE
+                &trans     &trans  &trans  &trans   &trans   &trans                   &kp C_PREV   &kp C_PP   &kp C_NEXT  &kp C_VOL_DN  &kp C_VOL_UP  &kp C_MUTE
                 &kp GRAVE  &trans  &trans  &trans   &trans   &trans                   &trans       &trans     &kp UP      &trans        &trans        &trans
                 &trans     &trans  &trans  &trans   &trans   &trans                   &trans       &kp LEFT   &kp DOWN    &kp RIGHT     &trans        &trans
                 &trans     &trans  &trans  &trans  &trans  &trans  &trans  &trans  &kp KP_PLUS  &kp MINUS  &kp EQUAL   &kp LBKT      &kp RBKT      &kp BSLH
@@ -85,20 +85,20 @@
 
         window_layer {
             // Hold LOWER + RAISE, in either order; release either to leave.
-            // Rectangle: I/J/K/L = halves; T/E = right/left two-thirds.
+            // Rectangle: I/J/K/L = halves; T/E = right/left two-thirds; Enter = maximize.
             // Hold Esc to arm maintenance; unassigned finger keys do nothing.
             // Blank = transparent (inherits); --- = no action.
             // |MAINT HOLD|   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
             // |   ---    |   ---    |   ---    | LEFT 2/3 |   ---    |RIGHT 2/3 |          |  |          |   ---    |   ---    | TOP 1/2  |   ---    |   ---    |   ---    |
             // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |          |  |          |   ---    | LEFT 1/2 |BOTTOM 1/2|RIGHT 1/2 |   ---    |   ---    |
             // |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |  |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |   ---    |
-            // |          |          |          |          |          |          |          |  |          |          |          |          |          |          |          |
+            // |          |          |          |          |          |          |          |  |          | MAXIMIZE |          |          |          |          |          |
             bindings = <
                 &mo 4  &none  &none   &none          &none   &none                        &none   &none             &none             &none              &none  &none
                 &none  &none  &none   &kp LC(LA(E))  &none   &kp LC(LA(T))                &none   &none             &kp LC(LA(UP))    &none              &none  &none
                 &none  &none  &none   &none          &none   &none                        &none   &kp LC(LA(LEFT))  &kp LC(LA(DOWN))  &kp LC(LA(RIGHT))  &none  &none
                 &none  &none  &none   &none          &none   &none          &none  &none  &none   &none             &none             &none              &none  &none
-                              &trans  &trans         &trans  &trans                       &trans  &trans            &trans            &trans
+                              &trans  &trans         &trans  &trans                       &kp LC(LA(RET))  &trans     &trans            &trans
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
         };
